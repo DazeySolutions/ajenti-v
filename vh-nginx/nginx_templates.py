@@ -23,12 +23,6 @@ http {
     sendfile on;
     tcp_nopush on;
 
-    keepalive_timeout 20;
-    client_header_timeout 20;
-    client_body_timeout 20;
-    reset_timedout_connection on;
-    send_timeout 20;
-
     types_hash_max_size 2048;
 
     gzip on;
@@ -70,11 +64,14 @@ proxy_redirect          off;
 proxy_set_header        Host            $host;
 proxy_set_header        X-Real-IP       $remote_addr;
 proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
-client_body_buffer_size 128k;
+client_body_buffer_size 10m;
 proxy_connect_timeout   90;
-proxy_send_timeout      90;
-proxy_read_timeout      90;
-proxy_buffers           32 4k;
+proxy_send_timeout  180;
+proxy_read_timeout  180;
+proxy_buffer_size   2m;
+proxy_buffers       4 4m;
+proxy_busy_buffers_size 4m;
+proxy_intercept_errors on;
 """
 
 TEMPLATE_CONFIG_FCGI = """
